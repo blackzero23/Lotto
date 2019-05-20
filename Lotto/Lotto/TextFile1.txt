@@ -1,0 +1,16 @@
+﻿  //foreach (Round round in rounds)
+            //{
+            //    foreach(var number in round.Numbers)
+            //    Console.Write(number);
+
+            //    Console.WriteLine();
+            //}
+
+
+			//List<int> numbers = new List<int>();            
+            //foreach (string token in tokens)
+            //{
+            //    int number = int.Parse(token);
+            //    numbers.Add(number);
+            //}
+

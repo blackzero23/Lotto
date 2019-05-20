@@ -13,28 +13,21 @@ namespace Lotto
         {
             List<Round> rounds = Round.Load(@"d:\Lotto.txt");
 
-            //foreach (Round round in rounds)
-            //{
-            //    Console.WriteLine(round.No);
-            //}
 
             string input = Console.ReadLine(); //1 2 3 4 12 23
             string[] tokens = input.Split(' ');
-            //List<int> numbers = new List<int>();
-
-            //foreach (string token in tokens)
-            //{
-            //    int number = int.Parse(token);
-            //    numbers.Add(number);
-            //}
-
+            
+            
             //람다식.
             List<int> numbers = tokens.Select(x => int.Parse(x)).ToList();
 
+            
 
             //구매이력.?
             List<Purchase> purchases = new List<Purchase>(rounds.Count());
 
+
+            //각회 당첨 입력번화  입력한 번호 비교 계산후 당첨 시 구매이력에 저장
             foreach (Round round in rounds)
             {
                 Purchase purchase = new Purchase();
@@ -43,30 +36,41 @@ namespace Lotto
             }
 
 
+            //저장된 구매 이력에서 각 등급에 이동?
+            //grade 생성
             List<Grade> grades = new List<Grade>();
             for (int i = 0; i < 5; i++)
             {
-                //grade 생성
+                Grade grade = new Grade();
+                grade.No = i+1;
+                foreach (Purchase puchase in purchases)
+                {
+                    if (puchase.Grade == i+1)
+                    {                   
+                        grade.Count++;
+                        grade.Amount += puchase.Prize;
+                    }
+                }
+                grades.Add(grade);
             }
 
-
+            long totalAmount = 0;
             foreach (Grade grade in grades)
             {
                 Console.WriteLine($"{grade.No}등 : {grade.Count}회," +
                     $"{grade.Amount:C0}");
+                totalAmount += grade.Amount;
             }
 
-
-            for (int i = 0; i < 5; i++)
-            {
-                Console.WriteLine($"{i + 1}등 : {0}회 * {0:C0} = " +
-                    $"{0:C0}");
-            }
+            long totalPurchaseaMount = ((long)purchases.Count() * 1000);
 
             Console.WriteLine($"총 구매금액 : { purchases.Count() * 1000:C0}");
-            Console.WriteLine($"총 당첨금액 : { 0:C0}");
 
-            Console.WriteLine($"수익률 : { 0:P2}");
+            Console.WriteLine($"총 당첨금액 : { totalAmount :C0}");
+            //수익률 = 총당첨금액 - 구매금액 / 구매 금액 
+            double yield = (double)(totalAmount - totalPurchaseaMount) / totalPurchaseaMount;
+
+            Console.WriteLine($"수익률 : { yield:P2}");
 
 
             Console.WriteLine();
