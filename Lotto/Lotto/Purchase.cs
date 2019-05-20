@@ -49,8 +49,19 @@ namespace Lotto
                     bounsnumber++;
             }
 
+            //var sameNumbers = from number in numbers
+            //                  from roundNumber in round.Numbers
+            //                  where number == roundNumber
+            //                  select number;
+
+            //var bounsnumber2 = from number in numbers                               
+            //                   where number == round.Bonus
+            //                   select number;
+
+            
+
             //비교 확인 후 저장
-            if(sameNumber == 6)
+            if (sameNumber == 6)
             {               
                 Grade = 1;
                 Prize = round.FirstPrize;
