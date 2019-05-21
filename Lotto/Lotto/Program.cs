@@ -7,26 +7,22 @@ using System.Threading.Tasks;
 
 namespace Lotto
 {
-    class Program
+
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             List<Round> rounds = Round.Load(@"d:\Lotto.txt");
-
-
+         
             string input = Console.ReadLine(); //1 2 3 4 12 23
             string[] tokens = input.Split(' ');
-            
-            
+                        
             //람다식.
             List<int> numbers = tokens.Select(x => int.Parse(x)).ToList();
-
             
-
             //구매이력.?
             List<Purchase> purchases = new List<Purchase>(rounds.Count());
-
-
+            
             //각회 당첨 입력번화  입력한 번호 비교 계산후 당첨 시 구매이력에 저장
             foreach (Round round in rounds)
             {
@@ -39,20 +35,32 @@ namespace Lotto
             //저장된 구매 이력에서 각 등급에 이동?
             //grade 생성
             List<Grade> grades = new List<Grade>();
+            
             for (int i = 0; i < 5; i++)
             {
                 Grade grade = new Grade();
                 grade.No = i+1;
                 foreach (Purchase puchase in purchases)
                 {
-                    if (puchase.Grade == i+1)
-                    {                   
-                        grade.Count++;
-                        grade.Amount += puchase.Prize;
-                    }
+                    if (puchase.Grade != i + 1) continue;
+                    grade.Count++;
+                    grade.Amount += puchase.Prize;
                 }
                 grades.Add(grade);
             }
+            //LINQ
+            //각 등수(1등~5등)인 객체들을 뽑아야한다.
+            //각 grade 등수에 해당하는 객체에 정보를 넣어야한다.
+
+            for (int i = 0; i < 5; i++)
+            {
+                var temp = from purchase in purchases
+                          from grade in grades
+                           where purchase.Grade == i + 1
+                          select purchase;
+            }
+
+
 
             long totalAmount = 0;
             foreach (Grade grade in grades)
